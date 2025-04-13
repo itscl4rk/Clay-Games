@@ -25,7 +25,6 @@ const ClickerPage = () => {
   const [subwaySurfersUnlocked, setSubwaySurfersUnlocked] = useState(false);
   const [dvdColorChangeUnlocked, setDvdColorChangeUnlocked] = useState(false);
   const [rainUnlocked, setRainUnlocked] = useState(false);
-  const [showMobileUpgrades, setShowMobileUpgrades] = useState(false);
   const [clickGainAnimations, setClickGainAnimations] = useState<
     { id: number; value: number; x: number; y: number }[]
   >([]);
@@ -35,7 +34,7 @@ const ClickerPage = () => {
 
   const playClickSound = () => new Audio(mouseClick).play();
   const playBubbleSound = () => new Audio(bubbleSound).play();
-  
+
   useEffect(() => {
     if (titleUnlocked) {
       document.title = "Stimulation Clicker";
@@ -49,6 +48,15 @@ const ClickerPage = () => {
       link.href = `${favicon}?v=${new Date().getTime()}`;
     }
   }, [titleUnlocked]);
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize(); // check on mount
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     if (!newsUnlocked) return;
@@ -144,7 +152,7 @@ const ClickerPage = () => {
         image: "/dvd.png",
         description: "+1 stimulation per bounce",
         unlocked: false,
-        function: dvdUpgrade, 
+        function: dvdUpgrade,
         price: getDVDUpgradeCost(dvdCount),
       },
       {
@@ -161,7 +169,11 @@ const ClickerPage = () => {
         description: "+1 stimulation per click",
         unlocked: amountAnimationUnlocked,
         function: () =>
-          unlockUpgrade(10, () => setAmountAnimationUnlocked(true), "Amount Animation"),
+          unlockUpgrade(
+            10,
+            () => setAmountAnimationUnlocked(true),
+            "Amount Animation"
+          ),
         price: 10,
       },
       {
@@ -169,7 +181,8 @@ const ClickerPage = () => {
         image: "/cps-upgrade.png",
         description: "See your stimulation per second",
         unlocked: showSps,
-        function: () => unlockUpgrade(20, () => setShowSps(true), "SPS Counter"),
+        function: () =>
+          unlockUpgrade(20, () => setShowSps(true), "SPS Counter"),
         price: 20,
       },
       {
@@ -177,7 +190,12 @@ const ClickerPage = () => {
         image: "/better-button.png",
         description: "+1 stimulation per click",
         unlocked: betterButtonUnlocked,
-        function: () => unlockUpgrade(40, () => setBetterButtonUnlocked(true), "Better Button"),
+        function: () =>
+          unlockUpgrade(
+            40,
+            () => setBetterButtonUnlocked(true),
+            "Better Button"
+          ),
         price: 40,
       },
       {
@@ -186,14 +204,20 @@ const ClickerPage = () => {
         description: "+5 stimulation per bounce",
         price: 75,
         unlocked: dvdSoundUnlocked,
-        function: () => unlockUpgrade(75, () => setDvdSoundUnlocked(true), "DVD Bounce Sound"),
+        function: () =>
+          unlockUpgrade(
+            75,
+            () => setDvdSoundUnlocked(true),
+            "DVD Bounce Sound"
+          ),
       },
       {
         name: "Lofi Beats",
         image: "/lofibeats.png",
         description: "+10 stimulation per second",
         unlocked: lofiBeatsUnlocked,
-        function: () => unlockUpgrade(250, () => setLofiBeatsUnlocked(true), "Lofi Beats"),
+        function: () =>
+          unlockUpgrade(250, () => setLofiBeatsUnlocked(true), "Lofi Beats"),
         price: 250,
       },
       {
@@ -210,7 +234,11 @@ const ClickerPage = () => {
         description: "+3 stimulation per second",
         unlocked: subwaySurfersUnlocked,
         function: () =>
-          unlockUpgrade(100, () => setSubwaySurfersUnlocked(true), "Subway Surfers"),
+          unlockUpgrade(
+            100,
+            () => setSubwaySurfersUnlocked(true),
+            "Subway Surfers"
+          ),
         price: 100,
       },
       {
@@ -220,7 +248,11 @@ const ClickerPage = () => {
           "DVD color changes on every bounce. +2 stimulation per bounce",
         unlocked: dvdColorChangeUnlocked,
         function: () =>
-          unlockUpgrade(150, () => setDvdColorChangeUnlocked(true), "DVD Color Change"),
+          unlockUpgrade(
+            150,
+            () => setDvdColorChangeUnlocked(true),
+            "DVD Color Change"
+          ),
         price: 150,
       },
       {
@@ -228,7 +260,8 @@ const ClickerPage = () => {
         image: "/rain.png",
         description: "Soothing rain sounds. +15 stimulation per second",
         unlocked: rainUnlocked,
-        function: () => unlockUpgrade(300, () => setRainUnlocked(true), "Rain Sounds"),
+        function: () =>
+          unlockUpgrade(300, () => setRainUnlocked(true), "Rain Sounds"),
         price: 300,
       },
     ],
@@ -245,7 +278,7 @@ const ClickerPage = () => {
       dvdColorChangeUnlocked,
       rainUnlocked,
       unlockUpgrade,
-      dvdUpgrade
+      dvdUpgrade,
     ]
   );
 
@@ -264,12 +297,24 @@ const ClickerPage = () => {
   const startLofiBeats = (playFunction: () => void) => {
     playFunction();
   };
-  const affordableUpgradeCount = useMemo(() => {
-    return visibleUpgrades.filter((u) => clicks >= u.price).length;
-  }, [visibleUpgrades, clicks]);
-
   return (
-    <div className="min-h-screen w-full bg-zinc-100 flex flex-col relative">
+    <div className={`min-h-screen w-full bg-zinc-100 flex flex-col relative`}>
+      {isMobile && (
+        <div className="fixed inset-0 z-50 bg-white flex flex-col items-center justify-center px-4 text-center">
+          <h2 className="text-2xl font-bold mb-4">Mobile Not Supported</h2>
+          <p className="text-zinc-600 mb-6">
+            This game is best experienced on a larger screen. Please switch to a
+            desktop or tablet.
+          </p>
+          <a
+            href="/"
+            className="bg-zinc-900 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-zinc-700 transition"
+          >
+            Go to Homepage
+          </a>
+        </div>
+      )}
+
       <Toaster />
       <div className="absolute inset-0 z-10">
         <DVD
@@ -329,22 +374,6 @@ const ClickerPage = () => {
           </p>
         )}
       </div>
-      <div className="fixed bottom-4 right-4 z-30 md:hidden">
-        <button
-          onClick={() => setShowMobileUpgrades(true)}
-          className={`transition-all duration-300 ${
-            affordableUpgradeCount > 0 && !showMobileUpgrades ? "opacity-100" : "opacity-0"
-          } relative flex items-center justify-center bg-zinc-900 text-white p-4 rounded-full shadow-lg`}
-        >
-          <span className="text-sm font-bold">Upgrades</span>
-          {affordableUpgradeCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
-              {affordableUpgradeCount}
-            </span>
-          )}
-        </button>
-      </div>
-
       <div className="flex flex-col items-center mb-70 z-20">
         <div className="items-center gap-4 mt-4 flex-wrap justify-center hidden md:flex">
           {visibleUpgrades.map((upgrade) => (
@@ -395,53 +424,6 @@ const ClickerPage = () => {
             </motion.div>
           ))}
         </div>
-        <AnimatePresence>
-          {showMobileUpgrades && (
-            <motion.div
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "100%" }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="fixed bottom-0 left-0 right-0 bg-white rounded-t-2xl p-4 z-40 shadow-2xl md:hidden"
-            >
-              <div className="flex justify-between items-center mb-4">
-                <span className="font-semibold text-lg">Upgrades</span>
-                <button
-                  onClick={() => setShowMobileUpgrades(false)}
-                  className="text-zinc-500 hover:text-zinc-700"
-                >
-                  Close
-                </button>
-              </div>
-
-              <div className="grid grid-cols-3 gap-4 overflow-y-auto max-h-[60vh]">
-                {visibleUpgrades.map((upgrade) => (
-                  <button
-                    key={upgrade.name}
-                    onClick={() => {
-                      upgrade.function();
-                      setShowMobileUpgrades(false); // close on purchase
-                    }}
-                    className={`relative flex flex-col items-center rounded-xl border p-2 transition-all duration-300 ${
-                      clicks >= upgrade.price
-                        ? "cursor-pointer border-zinc-900"
-                        : "border-gray-300 opacity-50"
-                    }`}
-                  >
-                    <img
-                      src={upgrade.image}
-                      alt={upgrade.name}
-                      className="w-12 h-12 rounded-lg"
-                    />
-                    <span className="text-xs font-mono mt-1 text-center">
-                      {upgrade.name}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </div>
   );
