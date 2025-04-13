@@ -1,0 +1,24 @@
+{
+    "songs": [
+        {
+            "name": "Late At Night",
+            "audioUrl": "/music/Late-at-Night.mp3"
+        },
+        {
+            "name": "Magical Moments",
+            "audioUrl": "/music/Magical-Moments.mp3"
+        },
+        {
+            "name": "Missing You",
+            "audioUrl": "/music/Missing-You.mp3"
+        },
+        {
+            "name": "New Beginnings",
+            "audioUrl": "/music/New-Beginnings.mp3"
+        },
+        {
+            "name": "Sonder",
+            "audioUrl": "/music/Sonder.mp3"
+        }
+    ]
+}

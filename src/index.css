@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: "Tournedos Lite";
+    src: url("/fonts/Tournedos Lite.otf") format("opentype");
+}
+
+@theme {
+  --font-roboto: "Roboto", sans-serif; 
+  --font-tournedos: "Tournedos Lite", sans-serif;
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
