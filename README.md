@@ -21,7 +21,6 @@ Either way, you're welcome here.
 
 ## 🛠️ Built With
 
-- HTML / CSS / JS
 - React + Vite
 - Tailwind CSS
 - Framer Motion (because animations are fun)
@@ -35,7 +34,7 @@ Either way, you're welcome here.
 ## 📫 Contact
 
 Have an idea or found a bug?  
-Reach out on [Twitter](https://twitter.com/your_handle) or open an issue.
+Open an issue here on github.
 
 ---
 
