@@ -22,11 +22,11 @@ export default function NewsMarquee({
         >
           {texts.map((text, index) => (
             <React.Fragment key={`${i}-${index}`}>
-              <p className="text-xl text-zinc-900 dark:text-zinc-100 pr-3 border-b border-zinc-900 dark:border-zinc-100">
+              <p className="text-xl text-zinc-900 pr-3 border-b border-zinc-900">
                 {text}
               </p>
               {index < texts.length - 1 && (
-                <span className="text-xl text-zinc-900 dark:text-zinc-100 pr-3 border-b border-zinc-900 dark:border-zinc-100">
+                <span className="text-xl text-zinc-900 pr-3 border-b border-zinc-900">
                   •
                 </span>
               )}

@@ -7,7 +7,7 @@ import DVD from "./components/DVD";
 import SubwaySurfers from "./components/SubwaySurfers";
 import mouseClick from "./sounds/mouse-click.mp3";
 import bubbleSound from "./sounds/dvd-bounce-sound.mp3";
-import favicon from "/clicker-icon.png";
+// import favicon from "/clicker-icon.png";
 import LofiBeats from "./components/LofiBeats";
 import RainEffect from "./components/RainEffect";
 
@@ -34,20 +34,6 @@ const ClickerPage = () => {
 
   const playClickSound = () => new Audio(mouseClick).play();
   const playBubbleSound = () => new Audio(bubbleSound).play();
-
-  useEffect(() => {
-    if (titleUnlocked) {
-      document.title = "Stimulation Clicker";
-      let link = document.querySelector("link[rel*='icon']") as HTMLLinkElement;
-      if (!link) {
-        link = document.createElement("link");
-        link.rel = "icon";
-        document.head.appendChild(link);
-      }
-      link.type = "image/png";
-      link.href = `${favicon}?v=${new Date().getTime()}`;
-    }
-  }, [titleUnlocked]);
 
   const [isMobile, setIsMobile] = useState(false);
 
@@ -95,14 +81,15 @@ const ClickerPage = () => {
 
   const handleClick = () => {
     const gain =
-      (betterButtonUnlocked ? 2 : 1) + (amountAnimationUnlocked ? 1 : 0);
+      (betterButtonUnlocked ? 2 : 1) +
+      (amountAnimationUnlocked ? 1 : 0);
     if (betterButtonUnlocked) playClickSound();
     const id = animationIdRef.current++;
     clickTimestamps.current.push(Date.now());
     setClicks((prev) => prev + gain);
 
     const randomX = (Math.random() - 0.5) * 80;
-    const randomY = -40 - Math.random() * 40;
+    const randomY = -40 - Math.random() * 40; // Same as before
 
     setClickGainAnimations((prev) => [
       ...prev,
@@ -149,7 +136,7 @@ const ClickerPage = () => {
     () => [
       {
         name: "DVD",
-        image: "/dvd.png",
+        image: "/upgrades/dvd.png",
         description: "+1 stimulation per bounce",
         unlocked: false,
         function: dvdUpgrade,
@@ -157,7 +144,7 @@ const ClickerPage = () => {
       },
       {
         name: "Add Tab Title",
-        image: "/tab-upgrade.png",
+        image: "/upgrades/tab-upgrade.png",
         description: "It's good for SEO",
         unlocked: titleUnlocked,
         function: () => unlockUpgrade(5, () => setTitleUnlocked(true), "Title"),
@@ -165,7 +152,7 @@ const ClickerPage = () => {
       },
       {
         name: "Amount Animation",
-        image: "/amount-animation-upgrade.png",
+        image: "/upgrades/amount-animation-upgrade.png",
         description: "+1 stimulation per click",
         unlocked: amountAnimationUnlocked,
         function: () =>
@@ -178,7 +165,7 @@ const ClickerPage = () => {
       },
       {
         name: "SPS Counter",
-        image: "/cps-upgrade.png",
+        image: "/upgrades/cps-upgrade.png",
         description: "See your stimulation per second",
         unlocked: showSps,
         function: () =>
@@ -187,7 +174,7 @@ const ClickerPage = () => {
       },
       {
         name: "Better Button",
-        image: "/better-button.png",
+        image: "/upgrades/better-button.png",
         description: "+1 stimulation per click",
         unlocked: betterButtonUnlocked,
         function: () =>
@@ -200,7 +187,7 @@ const ClickerPage = () => {
       },
       {
         name: "DVD Bounce Sound",
-        image: "/dvd-volume-upgrade.png",
+        image: "/upgrades/dvd-volume-upgrade.png",
         description: "+5 stimulation per bounce",
         price: 75,
         unlocked: dvdSoundUnlocked,
@@ -213,7 +200,7 @@ const ClickerPage = () => {
       },
       {
         name: "Lofi Beats",
-        image: "/lofibeats.png",
+        image: "/upgrades/lofibeats.png",
         description: "+10 stimulation per second",
         unlocked: lofiBeatsUnlocked,
         function: () =>
@@ -222,7 +209,7 @@ const ClickerPage = () => {
       },
       {
         name: "News",
-        image: "/news-upgrade.png",
+        image: "/upgrades/news-upgrade.png",
         description: "+4 stimulation per second",
         unlocked: newsUnlocked,
         function: () => unlockUpgrade(100, () => setNewsUnlocked(true), "News"),
@@ -230,7 +217,7 @@ const ClickerPage = () => {
       },
       {
         name: "Subway Surfers",
-        image: "/subway-surfers.png",
+        image: "/upgrades/subway-surfers.png",
         description: "+3 stimulation per second",
         unlocked: subwaySurfersUnlocked,
         function: () =>
@@ -243,7 +230,7 @@ const ClickerPage = () => {
       },
       {
         name: "DVD Color Change",
-        image: "/dvd-rainbow.png",
+        image: "/upgrades/dvd-rainbow.png",
         description:
           "DVD color changes on every bounce. +2 stimulation per bounce",
         unlocked: dvdColorChangeUnlocked,
@@ -257,7 +244,7 @@ const ClickerPage = () => {
       },
       {
         name: "Rain Sounds",
-        image: "/rain.png",
+        image: "/upgrades/rain.png",
         description: "Soothing rain sounds. +15 stimulation per second",
         unlocked: rainUnlocked,
         function: () =>
@@ -300,18 +287,42 @@ const ClickerPage = () => {
   return (
     <div className={`min-h-screen w-full bg-zinc-100 flex flex-col relative`}>
       {isMobile && (
-        <div className="fixed inset-0 z-50 bg-white flex flex-col items-center justify-center px-4 text-center">
-          <h2 className="text-2xl font-bold mb-4">Mobile Not Supported</h2>
-          <p className="text-zinc-600 mb-6">
-            This game is best experienced on a larger screen. Please switch to a
-            desktop or tablet.
-          </p>
-          <a
-            href="/"
-            className="bg-zinc-900 text-white px-6 py-2 rounded-full text-sm font-medium hover:bg-zinc-700 transition"
-          >
-            Go to Homepage
-          </a>
+        <div className="fixed inset-0 z-50 flex flex-col justify-between text-center text-black bg-yellow-400">
+          {/* Striped Top Banner */}
+          <div
+            className="h-20 w-full"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(-45deg, #000000, #000000 10px, #facc15 10px, #facc15 20px)",
+            }}
+          />
+
+          {/* Main Content */}
+          <div className="flex flex-col items-center justify-center px-6 flex-grow">
+            <div className="text-6xl mb-4 animate-bounce">🚧</div>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-2">
+              Page Under Construction
+            </h2>
+            <p className="max-w-md text-base sm:text-lg mb-6 font-medium">
+              Mobile support for this page is <strong>still being added</strong>
+              . Please use a desktop or tablet for now.
+            </p>
+            <a
+              href="/"
+              className="bg-black text-yellow-300 px-6 py-2 rounded-full text-sm font-semibold hover:bg-zinc-800 transition"
+            >
+              Return to Homepage
+            </a>
+          </div>
+
+          {/* Striped Bottom Banner */}
+          <div
+            className="h-20 w-full"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(-45deg, #000000, #000000 10px, #facc15 10px, #facc15 20px)",
+            }}
+          />
         </div>
       )}
 
@@ -326,22 +337,24 @@ const ClickerPage = () => {
       <RainEffect isUnlocked={rainUnlocked} />
       <SubwaySurfers isUnlocked={subwaySurfersUnlocked} />
       <NewsMarquee isUnlocked={newsUnlocked} />
-      <LofiBeats isUnlocked={lofiBeatsUnlocked} startLofi={startLofiBeats} />
+      <div className="fixed bottom-0 right-4 z-50">
+        <LofiBeats isUnlocked={lofiBeatsUnlocked} startLofi={startLofiBeats} />
+      </div>
 
       <div className="flex flex-col items-center mt-50 flex-grow z-20">
         <div
           className={`${
             amountAnimationUnlocked ? "" : "opacity-0"
-          } relative h-10 w-full flex justify-center items-center -mb-2 pointer-events-none`}
+          } relative h-10 w-full flex justify-center items-center z-0 -mb-2 pointer-events-none`}
         >
           <AnimatePresence>
             {clickGainAnimations.map((anim) => (
               <motion.span
                 key={anim.id}
-                initial={{ opacity: 0, scale: 0.8, x: 0, y: 0 }}
-                animate={{ opacity: 1, scale: 1, x: anim.x, y: anim.y }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.8, ease: [0.25, 1, 0.5, 1] }}
+                initial={{ opacity: 1, scale: 1, x: anim.x, y: 0 }}
+                animate={{ opacity: 0, y: -1000, x: anim.x }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 20, ease: "easeOut" }}
                 className="absolute text-lg z-0 font-bold text-zinc-500 pointer-events-none select-none"
               >
                 +{anim.value}

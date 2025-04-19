@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import songs from "../data/lofisongs.json";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const LofiBeats = ({
   isUnlocked,
@@ -8,12 +9,11 @@ const LofiBeats = ({
   isUnlocked: boolean;
   startLofi: (fn: () => void) => void;
 }) => {
-  const [currentSongIndex, setCurrentSongIndex] = useState(0); // To keep track of the current song
+  const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
 
   useEffect(() => {
     if (isUnlocked) {
-      // Register play function from the parent
       startLofi(() => {
         const audio = audioRef.current;
         if (audio) {
@@ -25,9 +25,8 @@ const LofiBeats = ({
     }
   }, [isUnlocked, startLofi]);
 
-  // Function to handle the song change when the current song finishes
   const handleSongEnd = () => {
-    setCurrentSongIndex((prevIndex) => (prevIndex + 1) % songs.songs.length); // Loop to the first song after the last one
+    setCurrentSongIndex((prevIndex) => (prevIndex + 1) % songs.songs.length);
   };
 
   const playNextSong = () => {
@@ -37,28 +36,36 @@ const LofiBeats = ({
   const playPrevSong = () => {
     setCurrentSongIndex(
       (prevIndex) => (prevIndex - 1 + songs.songs.length) % songs.songs.length
-    ); // Fix negative index
+    );
   };
 
   if (!isUnlocked) return null;
 
   return (
     <>
-      {/* Audio Player */}
-
       <audio
         ref={audioRef}
         src={songs.songs[currentSongIndex].audioUrl}
-        onEnded={handleSongEnd} // Listen for the 'ended' event to change to the next song
+        onEnded={handleSongEnd}
         className="mt-4 z-10 relative"
       />
-      <div className="group">
-        {/* Image of Lofi Beats */}
+      <div className="group relative w-[300px] h-[300px]">
         <img
-          className="absolute bottom-0 right-80 w-50 h-50 z-10 pointer-events-none"
-          src="/lofibeats.png"
+          className="w-full h-full object-contain pointer-events-none"
+          src="/upgrades/lofibeats.png"
           alt="LofiBeats"
         />
+        <div className="absolute top-8 left-1/2 transform -translate-x-1/2 h-12 w-11/12 bg-white shadow-xl text-zinc-900 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-between px-4 rounded-lg">
+          <button onClick={playPrevSong}>
+            <ChevronLeft className="cursor-pointer w-6 h-6" />
+          </button>
+          <span className="text-sm text-center px-2 truncate">
+            {songs.songs[currentSongIndex].name}
+          </span>
+          <button onClick={playNextSong}>
+            <ChevronRight className="cursor-pointer w-6 h-6" />
+          </button>
+        </div>
       </div>
     </>
   );

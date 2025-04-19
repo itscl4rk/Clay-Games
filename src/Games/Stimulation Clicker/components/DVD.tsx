@@ -84,7 +84,7 @@ const DVD = ({ count, onHitEdge, changeColorOnBounce }: DVDProps) => {
       {dvds.map((dvd, index) => (
         <img
           key={index}
-          src={`${changeColorOnBounce ? `/dvd-${dvd.color}.png` : `/dvd.png`}`}
+          src={`${changeColorOnBounce ? `/upgrades/dvd-${dvd.color}.png` : `/upgrades/dvd.png`}`}
           alt="DVD"
           style={{
             position: "absolute",

@@ -4,7 +4,7 @@ import newsData from "../data/news.json";
 const NewsMarquee = ({isUnlocked}: {isUnlocked: boolean}) => {
   const headlines = newsData.headlines;
   return (
-    <div className={`w-full bg-zinc-100 dark:bg-zinc-900 ${isUnlocked ? "" : "opacity-0"}`}>
+    <div className={`w-full bg-zinc-100 ${isUnlocked ? "" : "opacity-0"}`}>
       {/* Breaking News */}
       <div className="relative w-full flex">
         {/* Breaking Label */}
