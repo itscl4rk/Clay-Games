@@ -1,10 +1,4 @@
 ![image](./readme-banner.png)
-# Clay Games
-
-> Strange little games.  
-> Some make sense. Some don’t.  
-> All of them? Yours to explore.
-
 ## 🎮 What is Clay Games?
 
 Clay Games is a collection of small, experimental web games.  
