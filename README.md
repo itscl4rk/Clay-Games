@@ -1,4 +1,4 @@
-![image](./readme-banner(1).png)
+![image](./readme-banner.png)
 # Clay Games
 
 > Strange little games.  
